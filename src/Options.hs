@@ -1,17 +1,34 @@
 module Options
-( Options(..)
+( Format(..)
+, Options(..)
 , parser
 ) where
 
 import Data.Monoid
 import Options.Applicative
 
+-- | Output formats.
+data Format = FmtLatex    -- ^ LaTeX
+            | FmtMarkdown -- ^ GitHub Flavoured Markdown
+
 -- | Command-line options.
 data Options = Options { getExtensions   :: String
                        , getProjectName  :: String
-                       , getOutputFormat :: String
+                       , getOutputFormat :: Format
                        , getOutputFile   :: String
                        , getRootDir      :: String }
+
+-- | Textual representation of the Format type.
+instance Show Format where
+  show FmtLatex    = "latex"
+  show FmtMarkdown = "markdown"
+
+-- | Parse a output format name.
+formatReader :: String               -- ^ input
+             -> Either String Format -- ^ error message | format
+formatReader "latex"    = Right FmtLatex
+formatReader "markdown" = Right FmtMarkdown
+formatReader _          = Left "Format not supported"
 
 -- | Relevant file extensions options.
 optionExtensions :: Parser String -- ^ parser
@@ -40,11 +57,11 @@ optionOutputFile = strOption
   <> help    "Location of the resulting document"
 
 -- | Output format option.
-optionOutputFormat :: Parser String -- ^ parser
-optionOutputFormat = strOption
+optionOutputFormat :: Parser Format -- ^ parser
+optionOutputFormat = option (eitherReader formatReader)
    $ short   'f'
   <> long    "format"
-  <> value   "latex"
+  <> value   FmtLatex
   <> metavar "FORMAT"
   <> help    "Format of the resulting document, supported: latex, markdown"
   <> showDefault
