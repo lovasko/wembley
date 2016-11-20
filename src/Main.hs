@@ -5,8 +5,9 @@ import qualified System.FilePath as F
 import qualified System.FilePath.Find as F
 import qualified Data.ByteString.Char8 as C
 
-import Options
+import Latex
 import Markdown
+import Options
 
 
 -- | Convert paths to be relative to the project root.
@@ -21,7 +22,7 @@ generateOutput :: Options                  -- ^ command-line options
                -> C.ByteString             -- ^ final document
 generateOutput options entries = render (getOutputFormat options)
   where
---    render FmtLatex    = Latex.render name entries
+    render FmtLatex    = Latex.render name entries
     render FmtMarkdown = Markdown.render name entries
     name               = getProjectName options
 
