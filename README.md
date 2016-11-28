@@ -33,11 +33,11 @@ There are two methods of obtaining the utility:
 Running the following command in your shell:
 ```
 $ git clone https://github.com/lovasko/m_list.git
-$ wembley --extensions h,c \
-          --name m_list \
-          --format markdown \
-          --output m_list.md \
-          --root-dir ./m_list/src
+$ wembley --extensions h,c       \
+          --name       m_list    \
+          --format     markdown  \
+          --output     m_list.md \
+          --root-dir   m_list/src
 ```
 will yield this
 [result](https://gist.github.com/lovasko/9900732a993ccaa335b81b4dc3b96135).
