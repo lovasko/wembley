@@ -49,7 +49,7 @@ generateTOC names = C.unlines (header : map (convert . C.pack) names)
   where
     header       = "### Files"
     convert name = "* [" <> name <> "](#" <> linkify name <> ")"
-    linkify      = C.map toLower . C.filter isAlpha
+    linkify      = C.map toLower . C.filter (\c -> isAlpha c || c == '_')
 
 -- | Apply decoration to a whole codebase in order to create a document.
 render :: String                   -- ^ project name
