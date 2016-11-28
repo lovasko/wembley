@@ -20,11 +20,11 @@ relativePaths options = map (F.makeRelative (getRootDir options))
 generateOutput :: Options                  -- ^ command-line options
                -> [(String, C.ByteString)] -- ^ file names & contents
                -> C.ByteString             -- ^ final document
-generateOutput options entries = render (getOutputFormat options)
+generateOutput options entries = run (getOutputFormat options)
   where
-    render FmtLatex    = Latex.render name entries
-    render FmtMarkdown = Markdown.render name entries
-    name               = getProjectName options
+    run FmtLatex    = Latex.render name entries
+    run FmtMarkdown = Markdown.render name entries
+    name            = getProjectName options
 
 -- | Sort the file names alphabetically and by the number of path
 -- components.
