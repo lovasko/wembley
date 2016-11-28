@@ -32,15 +32,25 @@ ensureNewline str
   | C.last str == '\n' = str
   | otherwise          = str <> "\n"
 
+-- | All underscores must be escaped in order to prevent the subscript
+-- redenring.
+escapeUnderscore :: String -- ^ old string
+                 -> String -- ^ new string
+escapeUnderscore [] = []
+escapeUnderscore (x:xs)
+  | x == '_'  = '\\':x:escapeUnderscore xs
+  | otherwise = x:escapeUnderscore xs
+
 -- | Apply decoration to a single file and its contents.
 decorateFile :: (String, C.ByteString) -- ^ file name & content
              -> C.ByteString           -- ^ decorated file
 decorateFile (name, content) = C.unlines
-  [ "\\section*{" <> C.pack name <> "}"
-  , "\\addcontentsline{toc}{subsection}{" <> C.pack name <> "}"
+  [ "\\section*{" <> name' <> "}"
+  , "\\addcontentsline{toc}{subsection}{" <> name' <> "}"
   , "\\begin{minted}{" <> translateExt (tail $ F.takeExtensions name) <> "}"
   , ensureNewline content <> "\\end{minted}"
   , "\n" ]
+  where name' = C.pack $ escapeUnderscore name
 
 -- | Wrap the document in a standard envelope.
 envelope :: String       -- ^ project name
@@ -51,12 +61,13 @@ envelope name content = C.unlines
   , "\\usepackage{minted}"
   , "\\usepackage{fullpage}"
   , "\\begin{document}"
-  , "\\centerline{\\bf{\\Huge{" <> C.pack name <> "}}}"
+  , "\\centerline{\\bf{\\Huge{" <> name' <> "}}}"
   , "\\bigskip"
   , "\\tableofcontents"
   , "\\bigskip"
   , content
   , "\\end{document}" ]
+  where name' = C.pack $ escapeUnderscore name
 
 -- | Apply decoration to a whole codebase in order to create a document.
 render :: String                   -- ^ project name
