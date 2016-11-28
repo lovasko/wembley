@@ -43,7 +43,7 @@ acceptExtensions options
   | otherwise = foldr (F.||?) (return False) clauses
   where
     clauses  = map (F.extension F.==?) withDots
-    withDots = map ('.' :) $ filter (not . null) $ (splitOn "," exts)
+    withDots = map ('.' :) $ filter (not . null) (splitOn "," exts)
     exts     = getExtensions options
 
 -- | Find all files that are relevant to the provided options.
