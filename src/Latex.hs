@@ -21,6 +21,7 @@ translateExt ext
   | ext == "py"              = "python"
   | ext == "rb"              = "ruby"
   | ext == "java"            = "java"
+  | ext == "pro"             = "prolog"
   | otherwise                = "text"
 
 -- | Append newline as the last character of a string if it does not end
