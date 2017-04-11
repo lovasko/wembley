@@ -1,4 +1,7 @@
 # wembley
+[![Build Status](https://travis-ci.org/lovasko/wembley.svg?branch=master)](https://travis-ci.org/lovasko/wembley)
+
+## Introduction
 Command-line utility to pretty-print a whole codebase into a document form. 
 This output is usable for code reviews or archival purposes. Two formats are
 supported as of now: GitHub Flavoured Markdown and LaTeX (package `minted` used
